@@ -1,0 +1,15 @@
+{
+  "name": "big_brother",
+  "version": "1.0.995",
+  "birthday": "2020-12-23",
+  "description": "Мониторинг серверов",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Александр Краснов",
+  "license": "ISC",
+  "dependencies": {
+    "args-parser": "^1.1.0"
+  }
+}
