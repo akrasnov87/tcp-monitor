@@ -1,4 +1,10 @@
-//https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/RegExp
+/**
+ * @file modules/top-parser.js
+ * @project big_brother
+ * @author Aleksandr Krasnov
+ * @todo брал от сюда https://github.com/devalexqt/topparser
+ */
+
 
 function parseStatLine(line,options,error){
     line=line.replace(/ +(?= )/g,'')// replace multiple spaces
@@ -56,16 +62,15 @@ function parseProcessLine(str,error){
 }//parseRootTopLine
 
 
-
-
-
-// {
-//     pid_limit:10,//limit number of included pids in list (default: unlimited)
-//     pid_filter:(proc)=>{return proc.user=="root"?proc:null},// filtering the pid list (for example: include only pid with user == root) (default: null)
-//     pid_sort:(a,b)=>{return a.cpu-b.cpu},// sorting pid list by cpu usage (default)
-// }
-
-module.exports=function(data,options={pid_sort(a,b){return a.cpu-b.cpu}},error=(error)=>{/*parser error messages*/ console.log(error)}){
+/**
+ * Парсинг top - результата
+ * @param {string} data входная строка
+ * @param {any} options опции. По умолчанию {}
+ * @param {void} error обрабочик ошибок 
+ * @example
+ * var top = require('./modules/top-parser')(input, {}, error=>{ });
+ */
+module.exports = function(data,options={pid_sort(a,b){return a.cpu-b.cpu}},error=(error)=>{/*parser error messages*/ console.log(error)}){
     var data=data.split("\n").filter(v=>v!="")
     var result={
 

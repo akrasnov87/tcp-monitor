@@ -1,7 +1,14 @@
+/**
+ * @file /index.js
+ * @project big_brother
+ * @author Aleksandr Krasnov
+ */
+
+var args = require("args-parser")(process.argv);
 var net = require('net');
 
-var HOST = '0.0.0.0';
-var PORT = 3000;
+var HOST = args.host || '0.0.0.0';
+var PORT = args.port || "3000";
 
 // Create a server instance, and chain the listen function to it
 // The function passed to net.createServer() becomes the event handler for the 'connection' event
@@ -35,6 +42,6 @@ net.createServer(function(sock) {
         console.log('CLOSED: ' + sock.remoteAddress +' '+ sock.remotePort);
     });
 
-}).listen(PORT, HOST);
+}).listen(parseInt(PORT), HOST);
 
 console.log('Server listening on ' + HOST +':'+ PORT);

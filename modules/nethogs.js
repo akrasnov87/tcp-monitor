@@ -1,3 +1,25 @@
+/**
+ * @file modules/nethogs.js
+ * @project big_brother
+ * @author Aleksandr Krasnov
+ */
+
+ /**
+  * Парсинг nethogs - результата
+  * @param {string} input входная строка
+  * @returns {any}
+  * @example
+  * var nethogs = require('./modules/nethogs')(input);
+  * 
+  * Refreshing:
+  * unknown TCP/0/0 0       0
+  * -----------------------
+  * {
+  *     name: string, // наименование приложения, службы
+  *     sent: float, // отправлено
+  *     received: float // получено
+  * } 
+  */
 module.exports = function(input) {
     var interfaces = [];
     var str = 'Refreshing:';
