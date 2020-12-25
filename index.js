@@ -31,7 +31,7 @@ net.createServer(function(sock) {
             var input = data.toString();
             if(input.indexOf('top - ') >= 0) {
                 var item = require('./modules/top-parser')(input, {}, error=>{ });
-                buffer = createPkg('top', item, sock.remoteAddress);
+                buffer = createPkg('top', [item], sock.remoteAddress);
                 var items = [{
                     n_la1: parseFloat(item.top.load_average[0].replace(',', '.')),
                     n_la2: parseFloat(item.top.load_average[1].replace(',', '.')),
