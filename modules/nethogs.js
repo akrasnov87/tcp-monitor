@@ -20,7 +20,7 @@
   *     received: float // получено
   * } 
   */
-module.exports = function(input) {
+module.exports = function(input, remoteAddress) {
     var interfaces = [];
     var str = 'Refreshing:';
     var idx = input.indexOf(str);
@@ -33,7 +33,7 @@ module.exports = function(input) {
                 var name = line.substr(0, line.indexOf('/'));
                 var nums = line.split('\t');
 
-                interfaces.push({name:name, sent:parseFloat(nums[1]), received: parseFloat(nums[2])});
+                interfaces.push({c_name: name, n_sent:parseFloat(nums[1].replace(',', '.')), n_received: parseFloat(nums[2].replace(',', '.')), c_ip: remoteAddress});
             }
         }
     }

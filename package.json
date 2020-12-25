@@ -10,10 +10,12 @@
   "author": "Александр Краснов",
   "license": "ISC",
   "dependencies": {
-    "args-parser": "^1.1.0"
+    "args-parser": "^1.1.0",
+    "mobnius-packager": "git://git.appcode.pw/mobnius/packager.git",
+    "mobnius-pg-dbcontext": "git://git.appcode.pw/mobnius/pg-dbcontext.git"
   },
   "repository": {
-      "type": "git",
-      "url": "https://github.com/akrasnov87/tcp-monitor"
+    "type": "git",
+    "url": "https://github.com/akrasnov87/tcp-monitor"
   }
 }

@@ -83,8 +83,8 @@ module.exports = function(data,options={pid_sort(a,b){return a.cpu-b.cpu}},error
                     {regex: / ([0-9,\:]+)\, \d+ user/g, name:"up_hours"},
                     {regex: / (\d+) days/g, name:"up_days"},
     
-                    {regex: /(\d+) users/g, name:"users"},
-                    {regex: /load average: (\d+\.\d+)\, (\d+\.\d+)\, (\d+\.\d+)/g, name:"load_average",keys:3},//need subarray with values
+                    {regex: /(\d+) user/g, name:"user"},
+                    {regex: /load average: (\d+[\.,]\d+)\, (\d+[\.,]\d+)\, (\d+[\.,]\d+)/g, name:"load_average",keys:3},//need subarray with values
                     // {regex: /(\d+) zombie/g, name:"zombie"},
                 ]
     
@@ -109,14 +109,14 @@ module.exports = function(data,options={pid_sort(a,b){return a.cpu-b.cpu}},error
             {
                 root:{regex:/%Cpu/g,name:"cpu"},//root line params
                 params:[// parse variable values
-                    {regex: /(\d+\.\d) us/g, name:"us"},
-                    {regex: /(\d+\.\d) sy/g, name:"sy"},
-                    {regex: /(\d+\.\d) ni/g, name:"ni"},
-                    {regex: /(\d+\.\d) id/g, name:"id"},
-                    {regex: /(\d+\.\d) wa/g, name:"wa"},
-                    {regex: /(\d+\.\d) hi/g, name:"hi"},
-                    {regex: /(\d+\.\d) si/g, name:"si"},
-                    {regex: /(\d+\.\d) st/g, name:"st"},
+                    {regex: /(\d+[\.,]\d) us/g, name:"us"},
+                    {regex: /(\d+[\.,]\d) sy/g, name:"sy"},
+                    {regex: /(\d+[\.,]\d) ni/g, name:"ni"},
+                    {regex: /(\d+[\.,]\d) id/g, name:"id"},
+                    {regex: /(\d+[\.,]\d) wa/g, name:"wa"},
+                    {regex: /(\d+[\.,]\d) hi/g, name:"hi"},
+                    {regex: /(\d+[\.,]\d) si/g, name:"si"},
+                    {regex: /(\d+[\.,]\d) st/g, name:"st"},
                 ]
             },error
         ),//stat

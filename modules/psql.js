@@ -1,5 +1,5 @@
 /**
- * @file modules/postgres.js
+ * @file modules/psql.js
  * @project big_brother
  * @author Aleksandr Krasnov
  */
@@ -9,7 +9,7 @@
  * @param {string} input входная строка
  * @returns {any}
  * @example
- * var postgres = require('./modules/postgres')(input);
+ * var postgres = require('./modules/psql')(input);
  * 
  * datname  | xact_commit |              now              | numbackends 
  * ----------+-------------+-------------------------------+-------------
@@ -23,7 +23,7 @@
  *      numbackends: int
  * }
  */
-module.exports = function(input) {
+module.exports = function(input, remoteAddress) {
     var interfaces = [];
 
     var lines = input.split('\n');
@@ -36,10 +36,10 @@ module.exports = function(input) {
         if(line) {
             var data = line.split('|');
             interfaces.push({
-                datname: data[0].trim(),
-                xact_commit: parseInt(data[1].trim()),
-                now: data[2],
-                numbackends: parseInt(data[2].trim()),
+                c_datname: data[0].trim(),
+                n_xact_commit: parseInt(data[1].trim()),
+                n_numbackends: parseInt(data[3].trim()),
+                c_ip: remoteAddress
             })
         }
     }
