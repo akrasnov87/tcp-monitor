@@ -33,7 +33,11 @@ module.exports = function(input, remoteAddress) {
                 var name = line.substr(0, line.indexOf('/'));
                 var nums = line.split('\t');
 
-                interfaces.push({c_name: name, n_sent:parseFloat(nums[1].replace(',', '.')), n_received: parseFloat(nums[2].replace(',', '.')), c_ip: remoteAddress});
+                var sent = parseFloat(nums[1].replace(',', '.'));
+                var received = parseFloat(nums[2].replace(',', '.'));
+                if(sent != 0 || received != 0) {
+                    interfaces.push({c_name: name, n_sent: sent, n_received: received, c_ip: remoteAddress});
+                }
             }
         }
     }
