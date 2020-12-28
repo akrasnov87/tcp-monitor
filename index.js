@@ -12,7 +12,7 @@ var layout_result = require('mobnius-pg-dbcontext/modules/result-layout');
 
 var HOST = args.host || '0.0.0.0';
 var PORT = args.port || "3981";
-var sockets = [];
+var sockets = {};
 
 pgConn.init(args.connection_string);
 
@@ -29,6 +29,22 @@ net.createServer(function(sock) {
         var buffer = null;
         try {
             var input = data.toString();
+            if(input == 'Hello, World!!!') {
+                sock.isFriend = true;
+                return;
+            }
+
+            var sending = false;
+            for(var s in sockets) {
+                var socket = sockets[s];
+                if(socket.isFriend) {
+                    sending = true;
+                }
+            }
+
+            if(!sending)
+                return;
+
             if(input.indexOf('top - ') >= 0) {
                 var item = require('./modules/top-parser')(input, {}, error=>{ });
                 buffer = createPkg('top', [item], sock.remoteAddress);
@@ -106,7 +122,7 @@ net.createServer(function(sock) {
 
         if(buffer) {
             sockets.forEach(function(otherSocket) {
-                if (otherSocket !== sock) {
+                if (otherSocket !== sock && otherSocket.isFriend) {
                     otherSocket.write(buffer);
                     otherSocket.write('\n');
                 }
