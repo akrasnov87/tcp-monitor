@@ -12,7 +12,7 @@ var layout_result = require('mobnius-pg-dbcontext/modules/result-layout');
 
 var HOST = args.host || '0.0.0.0';
 var PORT = args.port || "3981";
-var sockets = {};
+var sockets = [];
 
 pgConn.init(args.connection_string);
 
