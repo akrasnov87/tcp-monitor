@@ -122,9 +122,14 @@ net.createServer(function(sock) {
 
         if(buffer) {
             sockets.forEach(function(otherSocket) {
-                if (otherSocket !== sock && otherSocket.isFriend) {
-                    otherSocket.write(buffer);
-                    otherSocket.write('\n');
+                if (otherSocket !== sock) {
+                    if(otherSocket.isFriend) {
+                        otherSocket.write(buffer);
+                        otherSocket.write('\n');
+                    } else {
+                        otherSocket.write("No friend");
+                        otherSocket.write('\n');
+                    }
                 }
             });
         }
