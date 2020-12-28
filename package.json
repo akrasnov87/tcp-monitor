@@ -1,6 +1,6 @@
 {
   "name": "big_brother",
-  "version": "1.5.531",
+  "version": "1.5.1121",
   "birthday": "2020-12-23",
   "description": "Мониторинг серверов",
   "main": "index.js",

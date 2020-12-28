@@ -51,7 +51,6 @@ net.createServer(function(sock) {
                         }
                     }
                 });
-                return;
             }
 
             if(input.indexOf('top - ') >= 0) {
@@ -77,7 +76,11 @@ net.createServer(function(sock) {
                         values.push(items[i][j]);
                     }
                 }
-                pgConn.query(sql, values, ()=>{});
+                pgConn.query(sql, values, (err, res, time, opts)=>{
+                    if(err) {
+                        !args.debug || console.log('ERR TOP: ' + JSON.stringify(opts) + '. ' + err.toString());
+                    }
+                });
             } else if(input.indexOf('Refreshing:') >= 0) {
                 var nethogs = require('./modules/nethogs')(input, sock.remoteAddress);
                 buffer = createPkg('net', nethogs, sock.remoteAddress);
@@ -88,7 +91,11 @@ net.createServer(function(sock) {
                         values.push(nethogs[i][j]);
                     }
                 }
-                pgConn.query(sql, values, ()=>{});
+                pgConn.query(sql, values, (err, res, time, opts)=>{
+                    if(err) {
+                        !args.debug || console.log('ERR NET: ' + JSON.stringify(opts) + '. ' + err.toString());
+                    }
+                });
             } else if(input.indexOf('xact_commit') >= 0) {
                 var psql = require('./modules/psql')(input, sock.remoteAddress);
                 buffer = createPkg('psql', psql, sock.remoteAddress);
@@ -99,7 +106,11 @@ net.createServer(function(sock) {
                         values.push(psql[i][j]);
                     }
                 }
-                pgConn.query(sql, values, ()=>{});
+                pgConn.query(sql, values, (err, res, time, opts)=>{
+                    if(err) {
+                        !args.debug || console.log('ERR PSQL: ' + JSON.stringify(opts) + '. ' + err.toString());
+                    }
+                });
             } else if(input.indexOf('1K-blocks') >= 0) {
                 var df = require('./modules/df')(input, sock.remoteAddress);
                 buffer = createPkg('df', df, sock.remoteAddress);
@@ -110,7 +121,11 @@ net.createServer(function(sock) {
                         values.push(df[i][j]);
                     }
                 }
-                pgConn.query(sql, values, ()=>{});
+                pgConn.query(sql, values, (err, res, time, opts)=>{
+                    if(err) {
+                        !args.debug || console.log('ERR DF: ' + JSON.stringify(opts) + '. ' + err.toString());
+                    }
+                });
             } else if(input.indexOf('kB_wrtn/s') >= 0) {
                 var iotop = require('./modules/iotop')(input, sock.remoteAddress);
                 buffer = createPkg('iotop', iotop, sock.remoteAddress);
@@ -121,7 +136,11 @@ net.createServer(function(sock) {
                         values.push(iotop[i][j]);
                     }
                 }
-                pgConn.query(sql, values, ()=>{});
+                pgConn.query(sql, values, (err, res, time, opts)=>{
+                    if(err) {
+                        !args.debug || console.log('ERR IOTOP: ' + JSON.stringify(opts) + '. ' + err.toString());
+                    }
+                });
             }
             !args.debug || console.log('DATA ' + sock.remoteAddress + ': ' + input);
         } catch(e) {

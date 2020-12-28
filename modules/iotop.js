@@ -37,7 +37,7 @@ module.exports = function(input, remoteAddress) {
     var isDevice = false;
     for(var i in lines) {
         var line = lines[i];
-        if(line && line.indexOf('Device') >= 0) {
+        if(line && line.indexOf('kB_read/s') >= 0) {
             isDevice = true;
             continue;
         }
