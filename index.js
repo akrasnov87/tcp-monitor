@@ -42,8 +42,17 @@ net.createServer(function(sock) {
                 }
             }
 
-            if(!sending)
+            if(!sending) {
+                sockets.forEach(function(otherSocket) {
+                    if (otherSocket !== sock) {
+                        if(!otherSocket.isFriend) {
+                            otherSocket.write("No friend");
+                            otherSocket.write('\n');
+                        }
+                    }
+                });
                 return;
+            }
 
             if(input.indexOf('top - ') >= 0) {
                 var item = require('./modules/top-parser')(input, {}, error=>{ });
@@ -122,14 +131,9 @@ net.createServer(function(sock) {
 
         if(buffer) {
             sockets.forEach(function(otherSocket) {
-                if (otherSocket !== sock) {
-                    if(otherSocket.isFriend) {
-                        otherSocket.write(buffer);
-                        otherSocket.write('\n');
-                    } else {
-                        otherSocket.write("No friend");
-                        otherSocket.write('\n');
-                    }
+                if (otherSocket !== sock && otherSocket.isFriend) {
+                    otherSocket.write(buffer);
+                    otherSocket.write('\n');
                 }
             });
         }
