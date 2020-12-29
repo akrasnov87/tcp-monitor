@@ -81,21 +81,6 @@ net.createServer(function(sock) {
                         !args.debug || console.log('ERR TOP: ' + JSON.stringify(opts) + '. ' + err.toString());
                     }
                 });
-            } else if(input.indexOf('Refreshing:') >= 0) {
-                var nethogs = require('./modules/nethogs')(input, sock.remoteAddress);
-                buffer = createPkg('net', nethogs, sock.remoteAddress);
-                var sql = pgConn.insertMany('dbo', 'cd_net', nethogs[0], nethogs.length);
-                var values = [];
-                for(var i in nethogs) {
-                    for(var j in nethogs[i]) {
-                        values.push(nethogs[i][j]);
-                    }
-                }
-                pgConn.query(sql, values, (err, res, time, opts)=>{
-                    if(err) {
-                        !args.debug || console.log('ERR NET: ' + JSON.stringify(opts) + '. ' + err.toString());
-                    }
-                });
             } else if(input.indexOf('xact_commit') >= 0) {
                 var psql = require('./modules/psql')(input, sock.remoteAddress);
                 buffer = createPkg('psql', psql, sock.remoteAddress);
@@ -139,6 +124,36 @@ net.createServer(function(sock) {
                 pgConn.query(sql, values, (err, res, time, opts)=>{
                     if(err) {
                         !args.debug || console.log('ERR IOTOP: ' + JSON.stringify(opts) + '. ' + err.toString());
+                    }
+                });
+            } else if(input.indexOf('rx:') >= 0 && input.indexOf('tx:') >= 0) {
+                var vnstat = require('./modules/vnstat')(input, sock.remoteAddress);
+                buffer = createPkg('net', vnstat, sock.remoteAddress);
+                var sql = pgConn.insertMany('dbo', 'cd_net', vnstat[0], vnstat.length);
+                var values = [];
+                for(var i in vnstat) {
+                    for(var j in vnstat[i]) {
+                        values.push(vnstat[i][j]);
+                    }
+                }
+                pgConn.query(sql, values, (err, res, time, opts)=>{
+                    if(err) {
+                        !args.debug || console.log('ERR NET: ' + JSON.stringify(opts) + '. ' + err.toString());
+                    }
+                });
+            } else if(input.indexOf('daily') >= 0 && input.indexOf('estimated') >= 0) {
+                var vnstat = require('./modules/vnstat_log')(input, sock.remoteAddress);
+                buffer = createPkg('net', vnstat, sock.remoteAddress);
+                var sql = pgConn.insertMany('dbo', 'cd_net_log', vnstat[0], vnstat.length);
+                var values = [];
+                for(var i in vnstat) {
+                    for(var j in vnstat[i]) {
+                        values.push(vnstat[i][j]);
+                    }
+                }
+                pgConn.query(sql, values, (err, res, time, opts)=>{
+                    if(err) {
+                        !args.debug || console.log('ERR NET_LOG: ' + JSON.stringify(opts) + '. ' + err.toString());
                     }
                 });
             }
