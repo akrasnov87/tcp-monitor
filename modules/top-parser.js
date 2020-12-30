@@ -38,26 +38,32 @@ function parseStatLine(line,options,error){
 
 function parseProcessLine(str,error){
     var result={}
-    var regex=/(?<=)\S+/g //capture values beetween spaces
-    var result={}
     try{
-        var data=[...str.matchAll(regex)]
+        var data = str.split(' ');
+        var items = [];
+        for(var i in data) {
+            if(data[i]) {
+                items.push(data[i]);
+            }
+        }
 
         result= {
-            "pid":data[0][0],
-            "user":data[1][0],
-            "pr":data[2][0],
-            "ni":data[3][0],
-            "virt":data[4][0],
-            "res":data[5][0],
-            "shr":data[6][0],
-            "s":data[7][0],
-            "cpu":data[8][0],
-            "mem":data[9][0],
-            "time":data[10][0],
-            "command":data[11][0],
+            "pid":items[0],
+            "user":items[1],
+            "pr":items[2],
+            "ni":items[3],
+            "virt":items[4],
+            "res":items[5],
+            "shr":items[6],
+            "s":items[7],
+            "cpu":items[8],
+            "mem":items[9],
+            "time":items[10],
+            "command":items[11],
         }
-    }catch(err){error(err)}
+    }catch(err){
+        error(err)
+    }
     return result
 }//parseRootTopLine
 
