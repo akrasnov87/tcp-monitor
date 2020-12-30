@@ -65,7 +65,7 @@ net.createServer(function(sock) {
                     n_task_running: parseInt(item.tasks.running),
                     n_mem_total: parseInt(item.mem.total),
                     n_mem_used: parseInt(item.mem.used),
-                    jb_data: JSON.stringify(item),
+                    jb_processes: JSON.stringify(item.processes[0]),
                     c_ip: sock.remoteAddress
                 }];
 
