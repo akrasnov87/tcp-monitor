@@ -30,6 +30,9 @@ net.createServer(function(sock) {
         try {
             var input = data.toString();
             if(input == 'Hello, World!!!') {
+                buffer = createPkg('args', [args], sock.remoteAddress);
+                sock.write(buffer);
+                sock.write('\n');
                 sock.isFriend = true;
                 return;
             }
