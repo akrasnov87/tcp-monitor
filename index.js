@@ -146,7 +146,7 @@ net.createServer(function(sock) {
                 });
             } else if(input.indexOf('daily') >= 0 && input.indexOf('estimated') >= 0) {
                 var vnstat = require('./modules/vnstat_log')(input, sock.remoteAddress);
-                buffer = createPkg('net', vnstat, sock.remoteAddress);
+                buffer = createPkg('net-log', vnstat, sock.remoteAddress);
                 var sql = pgConn.insertMany('dbo', 'cd_net_log', vnstat[0], vnstat.length);
                 var values = [];
                 for(var i in vnstat) {
