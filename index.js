@@ -45,6 +45,16 @@ net.createServer(function(sock) {
                 }
             }
 
+            if(input.indexOf('[sql ') == 0) {
+                var idx = input.indexOf(']');
+
+                var sql = pgConn.query(input.substr(idx + 1, input.length - (idx + 1)), null, function(err, res) {
+                    sock.write(createPkg(input.substr(5, idx - 5), res.rows, sock.remoteAddress));
+                    sock.write('\n');
+                });
+                return;
+            }
+
             if(!sending) {
                 sockets.forEach(function(otherSocket) {
                     if (otherSocket !== sock) {
