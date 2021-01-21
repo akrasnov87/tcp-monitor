@@ -47,9 +47,9 @@ net.createServer(function(sock) {
 
             if(input.indexOf('[sql ') == 0) {
                 var idx = input.indexOf(']');
-
+                var params = input.substr(0, idx).split(' ');
                 var sql = pgConn.query(input.substr(idx + 1, input.length - (idx + 1)), null, function(err, res) {
-                    sock.write(createPkg(input.substr(5, idx - 5), res.rows, sock.remoteAddress));
+                    sock.write(createPkg(params[1], res.rows, params[2]));
                     sock.write('\n');
                 });
                 return;
