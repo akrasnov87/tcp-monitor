@@ -191,13 +191,22 @@ net.createServer(function(sock) {
     });
 
     sock.on('error', function(err) {
-        !args.debug || console.log("Caught flash policy server socket error: " + sock.remoteAddress);
+        var index = sockets.indexOf(sock);
+        if(index >= 0) { 
+            sockets.splice(index, 1); 
+        }
+
         console.log(err.stack);
+        !args.debug || console.log("Caught flash policy server socket error: " + sock.remoteAddress);
     });
 
     // When the client requests to end the TCP connection with the server, the server
     // ends the connection.
     sock.on('end', function() {
+        var index = sockets.indexOf(sock);
+        if(index >= 0) { 
+            sockets.splice(index, 1); 
+        }
         !args.debug || console.log('Closing connection with the client: ' + sock.remoteAddress);
     });
 
