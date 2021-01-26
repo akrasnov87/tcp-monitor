@@ -46,6 +46,7 @@ net.createServer(function(sock) {
             }
 
             if(input.indexOf('[sql ') == 0) {
+                !args.debug || console.log('SQL QUERY: ' + input);
                 var idx = input.indexOf(']');
                 var params = input.substr(0, idx).split(' ');
                 var sql = pgConn.query(input.substr(idx + 1, input.length - (idx + 1)), null, function(err, res) {
