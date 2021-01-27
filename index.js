@@ -63,7 +63,7 @@ net.createServer(function(sock) {
             if(!sending) {
                 sockets.forEach(function(otherSocket) {
                     if (otherSocket !== sock) {
-                        if(!otherSocket.isFriend) {
+                        if(!otherSocket.isFriend && !otherSocket.destroyed) {
                             otherSocket.write("No friend");
                             otherSocket.write('\n');
                         }
@@ -183,7 +183,7 @@ net.createServer(function(sock) {
 
         if(buffer) {
             sockets.forEach(function(otherSocket) {
-                if (otherSocket !== sock && otherSocket.isFriend) {
+                if (otherSocket !== sock && otherSocket.isFriend && !otherSocket.destroyed) {
                     otherSocket.write(buffer);
                     otherSocket.write('\n');
                 }
@@ -192,10 +192,7 @@ net.createServer(function(sock) {
     });
 
     sock.on('error', function(err) {
-        var index = sockets.indexOf(sock);
-        if(index >= 0) { 
-            sockets.splice(index, 1); 
-        }
+        removeSock(sockets);
 
         console.log(err.stack);
         !args.debug || console.log("Caught flash policy server socket error: " + sock.remoteAddress);
@@ -204,22 +201,33 @@ net.createServer(function(sock) {
     // When the client requests to end the TCP connection with the server, the server
     // ends the connection.
     sock.on('end', function() {
-        var index = sockets.indexOf(sock);
-        if(index >= 0) { 
-            sockets.splice(index, 1); 
-        }
         !args.debug || console.log('Closing connection with the client: ' + sock.remoteAddress);
     });
 
     // Add a 'close' event handler to this instance of socket
     sock.on('close', function(data) {
         !args.debug || console.log('CLOSED: ' + sock.remoteAddress +' '+ sock.remotePort);
-        var index = sockets.indexOf(sock);
-        sockets.splice(index, 1);
+
+        removeSock(sockets);
     });
 }).listen(parseInt(PORT), HOST);
 
 console.log('Server listening on ' + HOST +':'+ PORT);
+
+/**
+ * удаление лишних подключений
+ * @param {any[]} sockets - массив
+ */
+function removeSock(sockets) {
+    var temp = [];
+    for(var i in sockets) {
+        if(!sockets[i].destroyed) {
+            temp.push(sockets[i]);
+        }
+    }
+
+    sockets = temp;
+}
 
 function createPkg(type, data, ip) {
     var pkg = packager.write();
