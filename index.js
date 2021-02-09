@@ -47,16 +47,22 @@ net.createServer(function(sock) {
 
             if(input.indexOf('[sql ') == 0) {
                 !args.debug || console.log('SQL QUERY: ' + input);
-                var idx = input.indexOf(']');
-                var params = input.substr(0, idx).split(' ');
-                var sql = pgConn.query(input.substr(idx + 1, input.length - (idx + 1)), null, function(err, res) {
-                    if(err) {
-                        !args.debug || console.log('ERR SQL: ' + err.toString());
-                    } else {
-                        sock.write(createPkg(params[1], res.rows, params[2]));
-                        sock.write('\n');
+                var items = input.split('\n');
+                for(var i in items) {
+                    input = items[i];
+                    if(input.trim()) {
+                        var idx = input.indexOf(']');
+                        var params = input.substr(0, idx).split(' ');
+                        var sql = pgConn.query(input.substr(idx + 1, input.length - (idx + 1)), null, function(err, res) {
+                            if(err) {
+                                !args.debug || console.log('ERR SQL: ' + err.toString());
+                            } else {
+                                sock.write(createPkg(params[1], res.rows, params[2]));
+                                sock.write('\n');
+                            }
+                        });
                     }
-                });
+                }
                 return;
             }
 
